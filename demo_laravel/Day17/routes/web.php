@@ -19,7 +19,7 @@ Route::put('/task/{id}',[TaskController::class,'update']);
 Route::delete('/task/{id}',[TaskController::class,'delete']);
 //b5
 Route::resource('projects', ProjectController::class);
-
+Route::resource('tasks', TaskController::class);
 Route::get('/', function () {
     return view('welcome');
 });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Models\Project;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -55,7 +56,7 @@ class TaskController extends Controller
         $task=new Task();
         $task->title=$request->input('title');
         $task->description=$request->input('description');
-        $task->completed=$request->input('completed');
+        $task->completed=$request->input('completed',0);
         $task->project_id=$request->input('project_id');
         $task->save();
         return redirect()->route('tasks.index');
@@ -68,12 +69,12 @@ class TaskController extends Controller
 
     public function update(Request $request, $id)
     {
-        $project = Project::find($id);
-        $project->title = $request->input('title');
-        $project->description = $request->input('description');
+        $task = Task::find($id);
+        $task->title = $request->input('title');
+        $task->description = $request->input('description');
         $task->completed=$request->input('completed');
         $task->project_id=$request->input('project_id');
-        $project->save();
+        $task->save();
         return redirect()->route('tasks.index');
     }
 
