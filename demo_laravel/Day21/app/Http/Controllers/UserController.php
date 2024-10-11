@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Jobs\SendWelcomeEmail;
+use App\Events\UserRegistered;
 
 class UserController extends Controller
 {
@@ -24,7 +25,7 @@ class UserController extends Controller
 
         // Dispatch job gửi email chào mừng
         SendWelcomeEmail::dispatch($user);
-
+        event(new UserRegistered($user));
         return redirect('/register')->with('success', 'User registered and job dispatched!');
     }
 }

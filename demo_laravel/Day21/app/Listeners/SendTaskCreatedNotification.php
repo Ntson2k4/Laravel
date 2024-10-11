@@ -14,7 +14,7 @@ class SendTaskCreatedNotification
      * @return void
      */
 
-     //b2 
+     //b2,4
      
     public function __construct()
     {
@@ -29,6 +29,7 @@ class SendTaskCreatedNotification
      */
     public function handle(TaskCreated $event)
     {
+        // \Log::info($event->message, ['task_id' => $event->task->id]);
         session()->flash('success', $event->message);
     }
 }

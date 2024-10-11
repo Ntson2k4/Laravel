@@ -4,35 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <title>Document</title>
+    <title>Task List</title>
 </head>
 <body>
     <div class="container mt-3">
-        <a href="{{url('tasks/create')}}" class="btn btn-primary mb-3">Tạo nhiệm vụ</a>
+        <h1>Danh sách Task</h1>
+        <a href="{{ route('tasks.create') }}" class="btn btn-primary mb-3">Thêm Task</a>
+
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
         <table class="table table-bordered">
-            <thread>
+            <thead>
                 <tr>
                     <th>Id</th>
                     <th>Name</th>
                     <th>Description</th>
+                    <th>Action</th>
                 </tr>
-            </thread>
+            </thead>
             <tbody>
                 @foreach($tasks as $task)
-                <tr>
-                    <td>{{$task->id}}</td>
-                    <td>{{$task->name}}</td>
-                    <td>{{$task->description}}</td>
-                </tr>
+                    <tr>
+                        <td>{{ $task->id }}</td>
+                        <td>{{ $task->name }}</td>
+                        <td>{{ $task->description }}</td>
+                        <td>
+                        <a href="{{ route('tasks.edit', $task) }}" class="btn btn-warning">Edit</a>
+                        <form action="{{ route('tasks.destroy', $task) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                        </td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>
-        @if (session('success'))
-            <script>
-                alert("{{ session('success') }}");
-            </script>
-        @endif
     </div>
 </body>
 </html>

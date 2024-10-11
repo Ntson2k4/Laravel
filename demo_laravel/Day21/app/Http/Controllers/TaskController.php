@@ -30,4 +30,26 @@ class TaskController extends Controller
         return redirect()->route('tasks.index')->with('success', 'Task created successfully!');
     }
 
+    public function edit($id){
+        $task=Task::find($id);
+        return view('tasks.edit',compact('task'));
+    }
+
+    public function update(Request $request, $id){
+        $validateData=$request->validate([
+            'name'=>'required|string|max:255',
+            'description'=>'nullable|string',
+        ]);
+        $task=Task::find($id);
+        $task->update($validateData);
+        event(new TaskCreated($task,'Task updated successfully'));
+        return redirect()->route('tasks.index')->with('success','Task updated successfully!');
+    }
+
+    public function destroy($id){
+        $task=Task::find($id);
+        $task->delete();
+        event(new TaskCreated($task,'Task deleted successfully!'));
+        return redirect()->route('tasks.index')->with('success','Task deleted successfully!');  
+    }
 }
