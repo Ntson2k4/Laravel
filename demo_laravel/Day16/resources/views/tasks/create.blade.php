@@ -1,4 +1,13 @@
 <h1>Create Task</h1>
+@if ($errors->any())
+    <div style="color: red;">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <form action="{{ route('tasks.store') }}" method="POST">
     @csrf
     <label for="title">Task Title</label>

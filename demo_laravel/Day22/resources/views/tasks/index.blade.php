@@ -1,5 +1,3 @@
-<!-- resources/views/tasks/index.blade.php -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +13,6 @@
 <div class="container mt-5">
         <h1 class="mb-4">Danh Sách Nhiệm Vụ</h1>
 
-        <!-- Thông báo -->
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
@@ -26,7 +23,6 @@
             </div>
         @endif
 
-        <!-- Bảng danh sách nhiệm vụ -->
         <table class="table table-bordered table-striped">
             <thead class="thead-dark">
                 <tr>
@@ -56,7 +52,6 @@
             </tbody>
         </table>
 
-        <!-- Nút thêm nhiệm vụ mới -->
         <a href="{{ route('tasks.create') }}" class="btn btn-success">Thêm Nhiệm Vụ Mới</a>
     </div>
 

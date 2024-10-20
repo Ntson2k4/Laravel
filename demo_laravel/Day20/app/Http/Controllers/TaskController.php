@@ -14,6 +14,7 @@ class TaskController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Task::class); // Kiểm tra quyền truy cập
         $tasks = Task::all();
         return response()->json($tasks);
     }

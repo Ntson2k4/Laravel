@@ -1,3 +1,12 @@
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <h2>Chỉnh sửa Dự án</h2>
 
 <form action="{{ route('projects.update', $project->id) }}" method="POST">

@@ -31,7 +31,12 @@ class TaskController extends Controller
             return redirect()->back()->with('error', 'Bạn không đủ quyền để tạo task.');
         }
 
-        $task = Task::create($request->all());
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        $task = Task::create($validatedData);
         return redirect()->route('tasks.index')->with('success', 'Task created successfully.');
     }
 
@@ -50,7 +55,12 @@ class TaskController extends Controller
             return redirect()->back()->with('error', 'Bạn không đủ quyền để cập nhật task.');
         }
 
-        $task->update($request->all());
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        $task->update($validatedData);
         return redirect()->route('tasks.index')->with('success', 'Task updated successfully.');
     }
 

@@ -18,20 +18,16 @@ class TaskControllerTest extends TestCase
 
     public function test_index_returns_tasks_view()
     {
-        // Tạo một người dùng và đăng nhập
         $user = User::factory()->create([
-            'role' => 'admin', // Nếu cần kiểm tra quyền admin
+            'role' => 'admin',
         ]);
     
         $this->actingAs($user);
 
-        // Tạo một nhiệm vụ
         Task::factory()->create();
 
-        // Gọi phương thức index
         $response = $this->get(route('tasks.index'));
 
-        // Kiểm tra phản hồi
         $response->assertStatus(200);
         $response->assertViewIs('tasks.index');
         $response->assertViewHas('tasks');
@@ -39,24 +35,20 @@ class TaskControllerTest extends TestCase
 
     public function test_store_creates_task()
     {
-        // Tạo một người dùng và đăng nhập
         $user = User::factory()->create([
-            'role' => 'user', // Nếu cần kiểm tra quyền admin
+            'role' => 'user', 
         ]);
     
         $this->actingAs($user);
 
-        // Gửi yêu cầu để tạo nhiệm vụ mới
         $response = $this->post(route('tasks.store'), [
             'name' => 'Test Task',
             'description' => 'Task description'
         ]);
 
-        // Kiểm tra phản hồi
         $response->assertRedirect(route('tasks.index'));
         $response->assertSessionHas('success');
 
-        // Kiểm tra rằng nhiệm vụ đã được tạo
         $this->assertDatabaseHas('tasks', [
             'name' => 'Test Task',
             'description' => 'Task description',

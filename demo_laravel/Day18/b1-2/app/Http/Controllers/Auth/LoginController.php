@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
-    //
     public function login(Request $request)
     {
         $request->validate([
@@ -28,5 +27,12 @@ class LoginController extends Controller
         return back()->withErrors([
             'email' => 'Thông tin đăng nhập không chính xác.',
         ]);
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout(); // Đăng xuất người dùng
+
+        return redirect()->route('login'); // Chuyển hướng về trang đăng nhập
     }
 }

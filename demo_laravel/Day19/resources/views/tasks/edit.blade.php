@@ -1,11 +1,14 @@
-@section('content')
-    <h1>Edit Task</h1>
-    @if (session('error'))
-        <div style="color: red;">
-            {{ session('error') }}
-        </div>
-    @endif
-    <form action="{{ route('tasks.update', $task) }}" method="POST">
+@if ($errors->any())
+    <div style="color: red;">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+<h1>Edit Task</h1>
+<form action="{{ route('tasks.update', $task) }}" method="POST">
         @csrf
         @method('PUT')
         <div>
@@ -19,7 +22,6 @@
         <button type="submit">Update Task</button>
         <a href="{{ route('tasks.index') }}">Back</a>
     </form>
-@endsection
 
     
 

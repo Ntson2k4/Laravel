@@ -1,20 +1,56 @@
-<form action="{{route('tasks.update',$task->id)}}" method="POST">
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+<form action="{{ route('tasks.update', $task->id) }}" method="POST">
     @csrf
     @method('PUT')
-    <input type="hidden" name="id">Id
 
-    <label for="title" value="{{$task->id}}">Tiêu đề</label>
-    <input type="text" name="title" value="{{$task->title}}"><br>
+    <input type="hidden" name="id" value="{{ $task->id }}">
 
-    <label for="description">Mô tả</label>
-    <input type="text" name="description" value="{{$task->description}}"><br>
+    <div>
+        <label for="title">Tiêu đề</label>
+        <input type="text" name="title" id="title" value="{{ old('title', $task->title) }}" required>
+        @error('title')
+            <div class="error">{{ $message }}</div>
+        @enderror
+    </div>
 
-    <label for="completed">Completed</label>
-    <input type="radio" name="completed" value="1" {{ $task->completed == 1 ? 'checked' : '' }} required>Yes
-    <input type="radio" name="completed" value="0" {{ $task->completed == 0 ? 'checked' : '' }}>No <br>
+    <div>
+        <label for="description">Mô tả</label>
+        <input type="text" name="description" id="description" value="{{ old('description', $task->description) }}" required>
+        @error('description')
+            <div class="error">{{ $message }}</div>
+        @enderror
+    </div>
 
-    <label for="project_id">Id project</label>
-    <input type="number" name="project_id" value="{{$task->project_id}}"><br>
+    <div>
+        <label>Hoàn thành</label><br>
+        <input type="radio" name="completed" value="1" {{ $task->completed == 1 ? 'checked' : '' }} required> Có
+        <input type="radio" name="completed" value="0" {{ $task->completed == 0 ? 'checked' : '' }}> Không
+    </div>
 
-    <button>Sửa</button>
+    <div>
+        <label for="project_id">Dự án</label>
+        <select name="project_id" id="project_id" required>
+            @foreach ($projects as $project)
+                <option value="{{ $project->id }}" {{ $project->id == $task->project_id ? 'selected' : '' }}>
+                    {{ $project->name }}
+                </option>
+            @endforeach
+        </select>
+        @error('project_id')
+            <div class="error">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <div>
+        <button type="submit">Sửa</button>
+    </div>
 </form>

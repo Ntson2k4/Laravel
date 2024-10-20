@@ -1,4 +1,10 @@
 <h1>Task List</h1>
+@if (session('success'))
+    <div style="color: green;">
+        {{ session('success') }}
+    </div>
+@endif
+
 <a href="{{ route('tasks.create') }}">Create Task</a>
 
 <ul>

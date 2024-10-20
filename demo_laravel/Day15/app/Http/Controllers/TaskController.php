@@ -19,13 +19,20 @@ class TaskController extends Controller
     }
     //add
     public function store(Request $request){
-        $task=new Task;
-        $task->title=$request->title;
-        $task->description =$request->description ;
-        $task->completed=$request->completed;
-
+        $validated = $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'nullable|max:1000',
+            'completed' => 'required|boolean',
+        ]);
+    
+        $task = new Task;
+        $task->title = $validated['title'];
+        $task->description = $validated['description'];
+        $task->completed = $validated['completed'];
+    
         $task->save();
-        return redirect('/tasks');
+    
+        return redirect('/tasks')->with('success', 'Task created successfully!');
     }
     //xoa
     public function destroy($id){
@@ -39,13 +46,20 @@ class TaskController extends Controller
         return view('tasks.task_update',compact('task'));
     }
     //sua
-    public function update(Request $request,$id){
-        $task=Task::find($id);
-        $task->title=$request->title;
-        $task->description =$request->description ;
-        $task->completed=$request->completed;
-
+    public function update(Request $request, $id){
+        $validated = $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'nullable|max:1000',
+            'completed' => 'required|boolean',
+        ]);
+    
+        $task = Task::find($id);
+        $task->title = $validated['title'];
+        $task->description = $validated['description'];
+        $task->completed = $validated['completed'];
+    
         $task->save();
-        return redirect('/tasks');
+    
+        return redirect('/tasks')->with('success', 'Task updated successfully!');
     }
 }

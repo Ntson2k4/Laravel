@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Welcome</title>
-</head>
-<body>
-    <h1>Welcome, {{ $user->name }}!</h1>
-    <p>Thank you for registering!</p>
-</body>
-</html>
+@component('mail::message')
+# Welcome, {{ $user->name }}!
+
+Thank you for registering with us. We're excited to have you on board!
+
+
+Thanks,<br>
+{{ config('app.name') }}
+@endcomponent

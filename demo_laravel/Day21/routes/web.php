@@ -22,7 +22,7 @@ Route::get('/register', function () {
     return view('emails.register');
 });
 
-Route::post('/register',[UserController::class,'store']);
+Route::post('/register', [UserController::class, 'store']);
 
 Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
 Route::get('/tasks/create', [TaskController::class, 'create'])->name('tasks.create');

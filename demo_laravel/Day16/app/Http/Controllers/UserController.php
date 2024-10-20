@@ -18,12 +18,19 @@ class UserController extends Controller
     }
 
     public function store(Request $request){
-        $user=new User();
-        $user->name=$request->name;
-        $user->email=$request->email;
-        $user->password=$request->password;
+        $validated = $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6',
+        ]);
+    
+        $user = new User();
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        $user->password = bcrypt($validated['password']); 
         $user->save();
-        return redirect()->route('users.index');
+    
+        return redirect()->route('users.index')->with('success', 'User created successfully!');
     }
 
     public function edit($id){
@@ -32,12 +39,21 @@ class UserController extends Controller
     }
 
     public function update(Request $request, $id){
-        $user=User::find($id);
-        $user->name=$request->name;
-        $user->email=$request->email;
-        $user->password=$request->password;
+        $validated = $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|email|unique:users,email,' . $id,
+            'password' => 'nullable|min:6',
+        ]);
+    
+        $user = User::findOrFail($id);
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        if (!empty($validated['password'])) {
+            $user->password = bcrypt($validated['password']);
+        }
         $user->save();
-        return redirect()->route('users.index');
+    
+        return redirect()->route('users.index')->with('success', 'User updated successfully!');
     }
 
     public function destroy($id){

@@ -18,13 +18,18 @@ class TaskController extends Controller
      }
  
      
-    public function store(Request $request){
-         $task = new Task();
-         $task->title = $request->input('title');
-         $task->save();
- 
-         return redirect()->route('tasks.index');
-     }
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|max:255',
+        ]);
+
+        $task = new Task();
+        $task->title = $validated['title'];
+        $task->save();
+
+        return redirect()->route('tasks.index')->with('success', 'Task created successfully!');
+    }
  
     
     public function edit($id){
@@ -33,11 +38,17 @@ class TaskController extends Controller
      }
  
     
-     public function update(Request $request, $id) {
+     public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'title' => 'required|max:255',
+        ]);
+
         $task = Task::findOrFail($id);
-        $task->title = $request->input('title');
+        $task->title = $validated['title'];
         $task->save();
-        return redirect()->route('tasks.index');
+
+        return redirect()->route('tasks.index')->with('success', 'Task updated successfully!');
     }
  
     

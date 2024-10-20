@@ -17,7 +17,7 @@ use App\Http\Controllers\TaskController;
 
 //posts
 Route::get('/posts',[PostController::class,'index']);
-
+    
 //tasks
 Route::get('/tasks', [TaskController::class, 'index']);
 Route::get('/tasks/create', [TaskController::class, 'create']);

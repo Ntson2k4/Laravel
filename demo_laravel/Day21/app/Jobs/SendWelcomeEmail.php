@@ -15,6 +15,7 @@ use Illuminate\Queue\SerializesModels;
 class SendWelcomeEmail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
     public $user;
     /**
      * Create a new job instance.
@@ -33,7 +34,7 @@ class SendWelcomeEmail implements ShouldQueue
      */
     public function handle()
     {
-        try {
+       try {
             Mail::to($this->user->email)->send(new WelcomeEmail($this->user));
         } catch (\Exception $e) {
             \Log::error('Failed to send welcome email: ' . $e->getMessage());

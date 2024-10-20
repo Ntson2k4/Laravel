@@ -20,24 +20,29 @@ class TaskTest extends TestCase
 
     public function test_user_can_create_task()
     {
-        // Tạo một user admin
         $user = User::factory()->create(['is_admin' => true]);
-        $this->actingAs($user); // Đặt user đang đăng nhập
+        $this->actingAs($user);
 
-        $response = $this->post('/tasks', [
+        $response = $this->post(route('tasks.store'), [
             'title' => 'New Task',
             'description' => 'New Description',
         ]);
 
         $response->assertStatus(201);
+        $response->assertJson([
+            'title' => 'New Task',
+            'description' => 'New Description',
+        ]);
         $this->assertDatabaseHas('tasks', ['title' => 'New Task']);
     }
 
     public function test_user_can_read_task()
     {
         $task = Task::factory()->create(['title' => 'Existing Task']);
+        $user = User::factory()->create(['is_admin' => true]);
+        $this->actingAs($user);
 
-        $response = $this->get('/tasks/' . $task->id);
+        $response = $this->get(route('tasks.show', $task->id));
         $response->assertStatus(200);
         $response->assertSee('Existing Task');
     }
@@ -46,14 +51,18 @@ class TaskTest extends TestCase
     {
         $task = Task::factory()->create(['title' => 'Old Task']);
         $user = User::factory()->create(['is_admin' => true]);
-        $this->actingAs($user); // Đặt user đang đăng nhập
+        $this->actingAs($user);
 
-        $response = $this->put('/tasks/' . $task->id, [
+        $response = $this->put(route('tasks.update', $task->id), [
             'title' => 'Updated Task',
             'description' => 'Updated Description',
         ]);
 
         $response->assertStatus(200);
+        $response->assertJson([
+            'title' => 'Updated Task',
+            'description' => 'Updated Description',
+        ]);
         $this->assertDatabaseHas('tasks', ['title' => 'Updated Task']);
     }
 
@@ -61,10 +70,10 @@ class TaskTest extends TestCase
     {
         $task = Task::factory()->create(['title' => 'Task to be deleted']);
         $user = User::factory()->create(['is_admin' => true]);
-        $this->actingAs($user); // Đặt user đang đăng nhập
+        $this->actingAs($user);
 
-        $response = $this->delete('/tasks/' . $task->id);
-        $response->assertStatus(204); 
+        $response = $this->delete(route('tasks.destroy', $task->id));
+        $response->assertStatus(204);
         $this->assertDatabaseMissing('tasks', ['id' => $task->id]);
     }
 
@@ -73,7 +82,7 @@ class TaskTest extends TestCase
         $user = User::factory()->create(['is_admin' => false]);
         $this->actingAs($user);
 
-        $response = $this->post('/tasks', [
+        $response = $this->post(route('tasks.store'), [
             'title' => 'Unauthorized Task',
             'description' => 'This should not be created',
         ]);

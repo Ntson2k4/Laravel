@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User; 
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,16 +16,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-        $user = new User();
-        $user->email = 'sonnt@gmail.com';
-        $user->password = Hash::make('0000'); // Mật khẩu gốc
-        $hashedPassword = Hash::make('0000');
-        $user->save();
+         // Kiểm tra xem người dùng đã tồn tại hay chưa
+         if (!User::where('email', 'sonnt@gmail.com')->exists()) {
+            $user = new User();
+            $user->name = 'Son Nguyen';
+            $user->email = 'sonnt@gmail.com';
+            $user->password = Hash::make('0000'); 
+            $user->role = 'user';
+            $user->save();
+        } else {
+            echo "User with email 'sonnt@gmail.com' already exists.\n";
+        }
     }
 }

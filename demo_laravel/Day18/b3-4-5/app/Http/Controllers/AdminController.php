@@ -32,4 +32,9 @@ class AdminController extends Controller
         Auth::logout();
         return redirect()->route('login')->with('success', 'Đăng xuất thành công!');
     }
+
+    public function dashboard()
+    {
+        return view('admin.dashboard'); // View cho dashboard admin
+    }
 }

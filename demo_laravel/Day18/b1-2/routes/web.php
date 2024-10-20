@@ -23,6 +23,8 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware('check.auth')->name('dashboard');
 
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
 //b2
 Route::get('/tasks',[TaskController::class,'index'])->name('tasks.index');
 Route::post('/tasks',[TaskController::class,'store'])->name('tasks.store');

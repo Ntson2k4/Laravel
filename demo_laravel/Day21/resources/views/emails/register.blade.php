@@ -7,15 +7,26 @@
 </head>
 <body>
     <h1>Register</h1>
+
+    @if ($errors->any())
+        <div style="color: red;">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form action="{{ url('/register') }}" method="POST">
         @csrf
         <div>
             <label for="name">Name:</label>
-            <input type="text" name="name" id="name" required>
+            <input type="text" name="name" id="name" required value="{{ old('name') }}">
         </div>
         <div>
             <label for="email">Email:</label>
-            <input type="email" name="email" id="email" required>
+            <input type="email" name="email" id="email" required value="{{ old('email') }}">
         </div>
         <div>
             <label for="password">Password:</label>

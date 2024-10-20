@@ -1,3 +1,8 @@
+@if (session('success'))
+    <div style="color: green;">
+        {{ session('success') }}
+    </div>
+@endif
 <a href="{{route('users.create')}}">Create</a>
 <table border="1">
     <thead>

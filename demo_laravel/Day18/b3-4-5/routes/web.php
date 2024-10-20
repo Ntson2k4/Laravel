@@ -25,7 +25,7 @@ Route::post('logout', [AdminController::class, 'logout'])
 // Route cho người dùng
 Route::get('/user/edit', [UserController::class, 'edit'])
     ->name('user.edit')
-    ->middleware('auth');
+    ->middleware(['auth', 'role:admin']);
 
 Route::put('/user/update', [UserController::class, 'update'])
     ->name('user.update')
@@ -34,3 +34,5 @@ Route::put('/user/update', [UserController::class, 'update'])
 // Route cho trang đăng ký
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+
+
